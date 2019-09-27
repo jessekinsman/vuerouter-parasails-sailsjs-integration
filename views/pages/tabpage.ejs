@@ -1,0 +1,41 @@
+<div id="tabpage" class="d-flex entrance full flex-column" v-cloak>
+  <div class="overlay-container purple">
+    <!-- desktop tabs -->
+    <div class="container mt-3 d-md-block d-none">
+      <ul class="nav nav-tabs">
+        <!-- A class 'router-link-active' will be given to any router-link that matches -->
+          <li v-if="authorized" class="nav-item"><router-link class="nav-link" to="/mine" >Tab 1</router-link></li>
+          <li v-if="authorized" class="nav-item"><router-link class="nav-link" to="/saved" >Tab 2</router-link></li>
+          <li class="nav-item"><router-link class="nav-link" to="/recent" >Tab 3</router-link></li>
+          <li class="nav-item"><router-link class="nav-link" to="/search" >Tab 4</router-link></li>
+      </ul>
+    </div>
+    <!-- end desktop tabs -->
+    <!-- this is where your component will render in your view -->
+    <router-view></router-view>
+    <!-- End component render -->
+  </div>
+  <!-- this is just the modal stuff. Does not really apply to this example -->
+  <modal class="not-authorized-modal" v-if="displayAuthorizedModal" @close="closeAuthorizedModal()" v-cloak>
+    <div class="modal-header">
+      <div class="close-container float-right">
+        <span @click="closeAuthorizedModal()" class="text-info fa fa-times fa-2x pointer" ></span>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div class="membership" v-if="authorized">
+        <h3>Your membership does not allow you to perform this action.</h3>
+      </div>
+      <div class="login" v-if="!authorized">
+        <h3>You must login to perform this action.</h3>
+        <p>Login and try loading this page again or create a new account (it only takes a minute)!</p>
+        <a href="/login" class="btn btn-success">Login</a>
+        <a href="/signup" class="btn btn-primary">Create an account</a>
+      </div>
+    </div>
+    <div class="modal-footer flex-row-reverse justify-content-between">
+      <button type="button" @click.prevent="closeAuthorizedModal()" data-dismiss="modal" class="btn btn-info">Close</button>
+    </div>
+  </modal>
+</div>
+<%- /* Expose server-rendered data as window.SAILS_LOCALS :: */ exposeLocalsToBrowser() %>
