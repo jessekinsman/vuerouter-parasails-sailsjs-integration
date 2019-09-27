@@ -88,11 +88,50 @@ I did not add the routes when the VueRouter was instantiated since I planned on 
 ```
 You could pass routes to the router when it is initialized if you did not want to pass static props.
 
-The component part of the routes object is a little tricks. You have to pass the component from the Vue Object. Vue has a list of all the components registered in the global Vue variable. 
+The component part of the routes object is a little tricky. You have to pass the component as a reference from the "Vue" object. Vue has a list of all the components registered in the global Vue variable. 
 `component: Vue.options.components.tab,
 `
 In this instance, the component I want to use is called "tab."
 
 The other piece is referencing the router that was just initialized so we can add routes to it. 
 `this.$router.addRoutes(routes);`
+
+## Adding the router markup to the view
+You can see how I did this in the file /views/pages/tabpage.ejs
+
+Essentially the tab links at the top of the page use the 
+`<router-link to="/">Tab</router-link>`
+Nothing really that tricky there.
+
+However, as I noted in the file, the link that is selected (has a match) will have the class "router-link-active" added to the anchor tab. This is handy for styling the selected tab. 
+
+Lastly in the view, you set where you want the component to be rendered using the following markup
+`<router-view></router-view>`
+
+###The tab component
+Nothing particularly complex about this. My example uses a dynamic route to pass a param for pagination (tab/2, tab/3) etc. This is for paginating through the data list. 
+
+Couple of gothas in router rendered component
+###Watch:
+The component is not automatically re-rendered when the dynamic part of the route changes. You have to watch for the change.
+```
+      watch: {
+        '$route' (to, from) {
+          this.setupPagination();
+        }
+      },
+```
+###Getting the current route
+In your component, you can reference the route params using:
+`this.$route.params`
+
+Or for the path
+`this.$route.path`
+
+Note: I removed some of the pagination code for this example as it was not relevant. Don't follow this as an example on how to implement pagination. It won't work.
+
+##That is all. File a pull request if you see any problems or issues.
+
+
+
 
